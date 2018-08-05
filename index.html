@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+<head>
+<title>JS Paint</title>
+<meta charset="utf-8">
+<style>
+html {
+  box-sizing: border-box;
+}
+*, *:before, *:after { box-sizing: inherit; }
+body {
+  font-family: sans-serif;
+  background: grey;
+  height: 100vh;
+  margin: 0;
+}
+a {
+  display: inline-block;
+  background: #69c;
+  color: #fff;
+  padding: 5px 10px;
+}
+canvas {
+  background: #f3f3f3;
+}
+</style>
+</head>
+<body>
+<script>
+let Coords = (event) => ({
+  x: event.pageX - event.target.offsetLeft,
+  y: event.pageY - event.target.offsetTop,
+});
+
+let $ = (q) =>
+  new DOMParser().parseFromString(q, 'text/html').body.firstChild;
+
+let canvas = document.createElement('canvas');
+let mousedown = false;
+
+let resize_canvas = (canvas, anchor) => {
+  canvas.width  = document.body.clientWidth;
+  // TODO: Determine wtf the 4 is from.
+  canvas.height = document.body.clientHeight - anchor.clientHeight - 4;
+};
+
+let draw = (coords, mousedown) => {
+  if (!mousedown) {
+    return;
+  }
+
+  let ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = 'hotpink';
+  ctx.beginPath();
+  ctx.arc(coords.x, coords.y, 10 , 0, Math.PI*2, true);
+  ctx.closePath();
+  ctx.fill();
+};
+
+canvas.addEventListener('mousemove', (e) => draw(Coords(e), mousedown), false);
+canvas.addEventListener('mousedown', (_) => mousedown = true,  false);
+canvas.addEventListener('mouseup',   (_) => mousedown = false, false);
+
+let anchor = $('<a download href>Save</a>');
+anchor.addEventListener('click',
+  (_) => anchor.href = canvas.toDataURL(),
+  false);
+document.body.appendChild(anchor);
+document.body.appendChild(canvas);
+
+window.addEventListener('resize', (_) => resize_canvas(canvas, anchor), false);
+resize_canvas(canvas, anchor);
+</script>
+</body>
+</html>
