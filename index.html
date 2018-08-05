@@ -64,12 +64,15 @@ canvas.addEventListener('mousemove', (e) => draw(Coords(e), mousedown));
 canvas.addEventListener('mousedown', (_) => mousedown   = true);
 canvas.addEventListener('mouseup',   (_) => mousedown   = false);
 anchor.addEventListener('click',     (_) => anchor.href = canvas.toDataURL());
+window.addEventListener('resize',    (_) => resize_canvas(canvas, anchor));
+
 document.body.appendChild(anchor);
 document.body.appendChild(source);
 document.body.appendChild(canvas);
 
-window.addEventListener('resize', (_) => resize_canvas(canvas, anchor), false);
-resize_canvas(canvas, anchor);
+// Gross, but at least I can change the event handler without having to
+// double check that this is updated!
+window.dispatchEvent(new Event('resize'))
 </script>
 </body>
 </html>
