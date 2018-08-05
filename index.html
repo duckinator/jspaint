@@ -19,6 +19,7 @@ a {
   background: #69c;
   color: #fff;
   padding: 5px 10px;
+  margin: 0.125em 0.5em;
 }
 canvas {
   background: #f3f3f3;
@@ -67,6 +68,9 @@ anchor.addEventListener('click',
   (_) => anchor.href = canvas.toDataURL(),
   false);
 document.body.appendChild(anchor);
+document.body.appendChild(
+  $('<a href="https://github.com/duckinator/jspaint">Source</a>')
+);
 document.body.appendChild(canvas);
 
 window.addEventListener('resize', (_) => resize_canvas(canvas, anchor), false);
