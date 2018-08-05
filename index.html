@@ -41,8 +41,8 @@ let mousedown = false;
 
 let resize_canvas = (canvas, anchor) => {
   canvas.width  = document.body.clientWidth;
-  // TODO: Determine wtf the 4 is from.
-  canvas.height = document.body.clientHeight - anchor.clientHeight - 4;
+  // TODO: Deal with the -10 better.
+  canvas.height = document.body.clientHeight - anchor.clientHeight - 10;
 };
 
 let draw = (coords, mousedown) => {
