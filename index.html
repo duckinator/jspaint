@@ -33,11 +33,7 @@ let Coords = (event) => ({
   y: event.pageY - event.target.offsetTop,
 });
 
-let $ = (q) =>
-  new DOMParser().parseFromString(q, 'text/html').body.firstChild;
-
-let canvas = document.createElement('canvas');
-let mousedown = false;
+let $ = (q) => new DOMParser().parseFromString(q, 'text/html').body.firstChild;
 
 let resize_canvas = (canvas, anchor) => {
   canvas.width  = document.body.clientWidth;
@@ -59,18 +55,17 @@ let draw = (coords, mousedown) => {
   ctx.fill();
 };
 
-canvas.addEventListener('mousemove', (e) => draw(Coords(e), mousedown), false);
-canvas.addEventListener('mousedown', (_) => mousedown = true,  false);
-canvas.addEventListener('mouseup',   (_) => mousedown = false, false);
-
+let canvas = document.createElement('canvas');
+let mousedown = false;
 let anchor = $('<a download href>Save</a>');
-anchor.addEventListener('click',
-  (_) => anchor.href = canvas.toDataURL(),
-  false);
+let source = $('<a href="https://github.com/duckinator/jspaint">Source</a>');
+
+canvas.addEventListener('mousemove', (e) => draw(Coords(e), mousedown));
+canvas.addEventListener('mousedown', (_) => mousedown   = true);
+canvas.addEventListener('mouseup',   (_) => mousedown   = false);
+anchor.addEventListener('click',     (_) => anchor.href = canvas.toDataURL());
 document.body.appendChild(anchor);
-document.body.appendChild(
-  $('<a href="https://github.com/duckinator/jspaint">Source</a>')
-);
+document.body.appendChild(source);
 document.body.appendChild(canvas);
 
 window.addEventListener('resize', (_) => resize_canvas(canvas, anchor), false);
